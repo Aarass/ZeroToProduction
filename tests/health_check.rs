@@ -1,5 +1,6 @@
 use reqwest::{self, Client};
 use std::net::TcpListener;
+use zero2prod::startup::run;
 
 #[tokio::test]
 async fn good_request() {
@@ -62,7 +63,7 @@ fn spawn_app() -> String {
     let listener = TcpListener::bind("127.0.0.1:0").expect("Could not bind port");
     let port = listener.local_addr().unwrap().port();
 
-    let server = zero2prod::run(listener).expect("Failed to run server");
+    let server = run(listener).expect("Failed to run server");
     let _ = tokio::spawn(server);
 
     format!("http://127.0.0.1:{}", port)
