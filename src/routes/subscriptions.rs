@@ -22,8 +22,3 @@ pub async fn subscribe(form: web::Form<UserData>, connection: web::Data<PgPool>)
     .expect("Failed to insert new subrscription");
     HttpResponse::Ok()
 }
-
-// pub async fn subscribe(form: web::Form<UserData>) -> impl Responder {
-//     println!("{}", form.name);
-//     HttpResponse::Ok()
-// }
