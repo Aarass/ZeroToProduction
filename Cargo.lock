@@ -2902,6 +2902,7 @@ dependencies = [
  "serde",
  "sqlx",
  "tokio",
+ "unicode-segmentation",
  "uuid",
 ]
 

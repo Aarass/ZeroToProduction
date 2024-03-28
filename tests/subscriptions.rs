@@ -41,3 +41,27 @@ async fn bad_request() {
         assert_eq!(400, response.status().as_u16(), "{}", error_msg)
     }
 }
+#[tokio::test]
+async fn bad_request_present_but_empty() {
+    let test_app = test_app::spawn_app().await;
+
+    let client = reqwest::Client::new();
+
+    let test_cases = vec![
+        // ("name=Aleksandar&email=", "Empty email"),
+        ("name=&email=prokopovic75%40gmail.com", "Empty name"),
+        ("name=&email=", "Empty both email and name"),
+    ];
+
+    for (body, error_msg) in test_cases {
+        let response = client
+            .post(format!("{}/subscriptions", test_app.address))
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .body(body)
+            .send()
+            .await
+            .expect("Couldn't send request");
+
+        assert_eq!(400, response.status().as_u16(), "{}", error_msg)
+    }
+}
