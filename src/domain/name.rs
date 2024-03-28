@@ -26,6 +26,13 @@ impl SubscriberName {
         }
     }
 }
+impl TryFrom<String> for SubscriberName {
+    type Error = String;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Self::parse(value)
+    }
+}
 impl AsRef<str> for SubscriberName {
     fn as_ref(&self) -> &str {
         &self.name

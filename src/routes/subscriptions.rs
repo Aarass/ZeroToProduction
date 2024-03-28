@@ -14,7 +14,7 @@ pub struct UserData {
 pub async fn subscribe(form: web::Form<UserData>, connection: web::Data<PgPool>) -> impl Responder {
     let form = form.into_inner();
 
-    let Ok(new_subscriber) = NewSubscriber::parse(form.name, form.email) else {
+    let Ok(new_subscriber) = form.try_into() else {
         println!("Invalid data passed to subscribe");
         return HttpResponse::BadRequest();
     };
@@ -34,7 +34,7 @@ pub async fn insert_new_subscriber(
     sqlx::query!(
         "INSERT INTO subscriptions (id, email, name, subscribed_at) VALUES($1, $2, $3, $4)",
         Uuid::new_v4(),
-        new_subscriber.email,
+        new_subscriber.email.as_ref(),
         new_subscriber.name.as_ref(),
         Utc::now()
     )
